@@ -35,6 +35,6 @@ L'application est composée de trois éléments :
 ### 1. Récupérer le projet
 
 ```bash
-git clone URL_DU_DEPOT
-cd todo-app
+git clone https://github.com/GoldenBoy242/todo-app-bare-metal-docker.git
+cd todo-app-bare-metal-docker
 
