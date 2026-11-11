@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: tododb
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - todo_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U todo_user -d tododb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      DB_HOST: db
+      DB_USER: todo_user
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: tododb
+      DB_PORT: 5432
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - todo_network
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    depends_on:
+      - backend
+    networks:
+      - todo_network
+
+volumes:
+  postgres_data:
+
+networks:
+  todo_network:
+    driver: bridge

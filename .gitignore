@@ -1,0 +1,14 @@
+# Fichiers de configuration sensibles
+.env
+**/.env
+
+# Dépendances Node.js
+node_modules/
+
+# Fichiers temporaires
+npm-debug.log*
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
